@@ -35,7 +35,7 @@ async function get(url) {
       await sleep((Number(res.headers.get('retry-after')) || 20) * 1000);
       continue;
     }
-    if (!res.ok) throw new Error(res.status + ' ' + res.statusText + ' for ' + url + '\n' + (await res.text()).slice(0, 500));
+    if (!res.ok) throw Object.assign(new Error(res.status + ' ' + res.statusText + ' for ' + url + '\n' + (await res.text()).slice(0, 500)), {status: res.status});
     return res.json();
   }
 }
@@ -79,11 +79,12 @@ for (let next = API + '/service_types/' + SERVICE_TYPE + '/plans?filter=past&ord
 }
 console.log('Found ' + plans.length + ' services.');
 
-// Song items in each service
-const rows = [];
+// Song items in each service, plus the song details that come with them
+const rows = [], seenSongs = new Map();
 for (const plan of plans.reverse()) {
   const {data, included} = await getAll(API + '/service_types/' + SERVICE_TYPE + '/plans/' + plan.id + '/items?include=song,arrangement&per_page=100');
   const arrangements = new Map(included.filter((x) => x.type === 'Arrangement').map((x) => [x.id, x.attributes]));
+  for (const s of included.filter((x) => x.type === 'Song')) seenSongs.set(s.id, s.attributes);
   const songItems = data.filter((i) => i.attributes.item_type === 'song').sort((a, b) => a.attributes.sequence - b.attributes.sequence);
   songItems.forEach((i, n) => {
     const songRel = i.relationships.song && i.relationships.song.data;
@@ -105,12 +106,23 @@ const merged = previous.filter((u) => !pulled.has(u.date)).concat(rows)
   .sort((a, b) => a.date.localeCompare(b.date) || a.pos - b.pos);
 writeJson('data/pco/uses-auto.json', merged);
 
-// Whole song library (new songs, edited authors and themes)
-const library = (await getAll(API + '/songs?per_page=100&order=title')).data.map((s) => ({
-  id: s.id, title: s.attributes.title, author: s.attributes.author, ccli: s.attributes.ccli_number,
-  themes: s.attributes.themes, hidden: s.attributes.hidden, created_at: s.attributes.created_at,
-  last_scheduled_at: s.attributes.last_scheduled_at
-}));
-if (library.length < 50) throw new Error('Song library came back with only ' + library.length + ' songs; not saving it.');
-writeJson('data/pco/songs.json', library);
-annotate('notice', 'Saved ' + rows.length + ' song uses from ' + plans.length + ' services (' + from + ' to ' + today + ') and ' + library.length + ' library songs.');
+// Song details: the whole library if this token may read it, otherwise just the songs seen in services
+const toSong = (id, a, old) => ({
+  id, title: a.title ?? (old && old.title), author: a.author ?? null, ccli: a.ccli_number ?? null, themes: a.themes ?? null,
+  hidden: a.hidden ?? (old ? old.hidden : false), created_at: a.created_at ?? (old ? old.created_at : null),
+  last_scheduled_at: a.last_scheduled_at ?? (old ? old.last_scheduled_at : null)
+});
+const library = new Map(readJson('data/pco/songs.json').map((s) => [String(s.id), s]));
+let fullLibrary = false;
+try {
+  const all = (await getAll(API + '/songs?per_page=100&order=title')).data;
+  if (all.length >= 50) { for (const s of all) library.set(s.id, toSong(s.id, s.attributes, library.get(s.id))); fullLibrary = true; }
+} catch (e) {
+  if (e.status !== 403) throw e;
+  annotate('warning', 'This Planning Center user cannot read the Song Library, so only songs used in services were refreshed. ' +
+    'New songs will have no "Added to PCO" date until the token user is given Song Library access.');
+}
+if (!fullLibrary) for (const [id, a] of seenSongs) library.set(id, toSong(id, a, library.get(id)));
+writeJson('data/pco/songs.json', [...library.values()].sort((a, b) => String(a.title).localeCompare(String(b.title))));
+annotate('notice', 'Saved ' + rows.length + ' song uses from ' + plans.length + ' services (' + from + ' to ' + today + '); ' +
+  (fullLibrary ? 'refreshed all ' + library.size + ' library songs.' : 'refreshed ' + seenSongs.size + ' songs seen in services.'));
