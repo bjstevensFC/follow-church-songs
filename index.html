@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Follow Church - Sunday Morning Songs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--panel:#f6f7f9;--fg:#1c2333;--head:#14213d;--muted:#5b6475;--line:#e3e6ec;--accent:#14213d;--gold:#c98a12;--banner:#14213d;--banner-fg:#fff;--banner-acc:#f2b84b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11151d;--panel:#1a202b;--fg:#e6e9ef;--head:#f3f5f8;--muted:#9aa3b2;--line:#2a3140;--accent:#f2b84b;--gold:#f2b84b;--banner:#1f2a44;--banner-fg:#fff;--banner-acc:#f2b84b}}
+:root[data-theme="dark"]{--bg:#11151d;--panel:#1a202b;--fg:#e6e9ef;--head:#f3f5f8;--muted:#9aa3b2;--line:#2a3140;--accent:#f2b84b;--gold:#f2b84b;--banner:#1f2a44;--banner-fg:#fff;--banner-acc:#f2b84b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45}
+.wrap{max-width:72rem;margin:0 auto;padding:28px 16px 48px;display:flex;flex-direction:column;gap:22px}
+h1{margin:0;font-size:clamp(22px,4vw,30px);font-weight:800;letter-spacing:-.4px;color:var(--head)}
+.sub{margin:4px 0 0;color:var(--muted)}
+.sub b{color:var(--fg);font-weight:600}
+.filter{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.field{display:flex;flex-direction:column;gap:2px;font-size:12px;color:var(--muted)}
+input[type=date],button{font:inherit;font-size:14px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+button{cursor:pointer;font-size:13px}
+button:hover{border-color:var(--muted)}
+button.on{background:var(--head);color:var(--bg);border-color:var(--head)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr));gap:12px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat b{display:block;font-size:28px;font-weight:800;color:var(--head);line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.banner{background:var(--banner);color:var(--banner-fg);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--banner-acc);font-weight:700}
+.toprow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.topname{font-size:22px;font-weight:800}
+.topdots{display:flex;flex-wrap:wrap;gap:4px;flex:1;min-width:0}
+.topdots .dot{width:12px;height:12px;background:var(--banner-acc)}
+.topn{font-weight:800;color:var(--banner-acc);white-space:nowrap}
+.caught{margin:0;font-size:14px;opacity:.9}
+.banner .new{color:var(--banner-acc);border-color:var(--banner-acc)}
+.empty{margin:0;color:var(--muted)}
+section{display:flex;flex-direction:column;gap:8px}
+h2{margin:0;font-size:17px;font-weight:700;color:var(--head);border-bottom:2px solid var(--line);padding-bottom:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+h2 small{font-size:13px;color:var(--muted);font-weight:400}
+.rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,22rem),1fr));column-gap:32px}
+.row{display:grid;grid-template-columns:minmax(0,13rem) minmax(0,1fr) 2rem;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.name{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0;overflow-wrap:anywhere}
+.dots{display:flex;flex-wrap:wrap;gap:3px;min-width:0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;font-weight:700}
+.new{font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:0 4px;line-height:1.5}
+.once{list-style:none;margin:0;padding:0;columns:14rem;column-gap:32px;line-height:1.8}
+.once li{break-inside:avoid;padding-left:16px;position:relative}
+.once li .dot{position:absolute;left:0;top:.6em}
+.once li.isnew{font-weight:700}
+.notes{margin:0;padding-left:18px;font-size:13px;color:var(--muted);line-height:1.6}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);align-items:center}
+.key span{display:inline-flex;align-items:center;gap:6px}
+[hidden]{display:none!important}
+@media (max-width:480px){.row{grid-template-columns:minmax(0,9rem) minmax(0,1fr) 1.6rem}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1>Follow Church - Sunday Morning Songs</h1>
+    <p class="sub">How often each song was used across <b id="services">—</b>. Christmas songs are not included.</p>
+  </header>
+
+  <div class="filter">
+    <label class="field">From<input id="start" type="date" min="2025-01-01" max="2027-12-31"></label>
+    <label class="field">To<input id="end" type="date" min="2025-01-01" max="2027-12-31"></label>
+    <div class="presets">
+      <button type="button" data-months="3">Last 3 months</button>
+      <button type="button" data-months="6">Last 6 months</button>
+      <button type="button" data-months="12">Last 12 months</button>
+      <button type="button" data-months="all">All dates</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="st-songs">—</b><span>different songs</span></div>
+    <div class="stat"><b id="st-slots">—</b><span>total song slots</span></div>
+    <div class="stat"><b id="st-new">—</b><span>new songs used</span></div>
+    <div class="stat"><b id="st-once">—</b><span>of songs sung only once</span></div>
+  </div>
+
+  <p class="empty" id="none" hidden>No songs were used in this date range.</p>
+
+  <div class="banner" id="banner">
+    <div class="eyebrow" id="top-label">Most-sung song</div>
+    <div id="top"></div>
+    <p class="caught" id="caught-line">New songs that made the most-used group: <span id="caught"></span></p>
+  </div>
+
+  <div id="tiers"></div>
+
+  <section id="sung-once">
+    <h2>Sung once <small><span id="once-count"></span> songs · bold = new</small></h2>
+    <ul class="once" id="once"></ul>
+  </section>
+
+  <section>
+    <h2>What was cleaned up</h2>
+    <ul class="notes" id="notes"></ul>
+  </section>
+
+  <div class="key"><span><i class="dot"></i> one service the song was used</span><span><b class="new">NEW</b> marked new in the Planning Center report</span><span>Source: Planning Center Services song usage report · updated <span id="updated"></span></span></div>
+</main>
+
+<script>
+const USES = [{"date":"2026-08-30","song":"10,000 Reasons (Bless The Lord)","new":"","row":"1"},{"date":"2026-08-30","song":"AMAZING!","new":"new","row":"2"},{"date":"2026-09-06","song":"AMAZING!","new":"new","row":"2"},{"date":"2026-10-04","song":"AMAZING!","new":"new","row":"2"},{"date":"2026-11-01","song":"AMAZING!","new":"new","row":"2"},{"date":"2025-06-08","song":"Abide","new":"","row":"3"},{"date":"2025-06-22","song":"Abide","new":"","row":"3"},{"date":"2025-07-20","song":"Abide","new":"","row":"3"},{"date":"2025-08-17","song":"Abide","new":"","row":"3"},{"date":"2025-09-07","song":"Abide","new":"","row":"3"},{"date":"2025-10-26","song":"Abide","new":"","row":"3"},{"date":"2025-11-02","song":"Abide","new":"","row":"3"},{"date":"2025-12-28","song":"Abide","new":"","row":"3"},{"date":"2026-01-11","song":"Abide","new":"","row":"3"},{"date":"2026-04-26","song":"Abide","new":"","row":"3"},{"date":"2026-06-28","song":"Abide","new":"","row":"3"},{"date":"2026-07-12","song":"Abide","new":"","row":"3"},{"date":"2026-08-02","song":"Abide","new":"","row":"3"},{"date":"2026-08-16","song":"Abide","new":"","row":"3"},{"date":"2026-09-06","song":"Abide","new":"","row":"3"},{"date":"2026-10-18","song":"Abide","new":"","row":"3"},{"date":"2025-10-26","song":"All Hail King Jesus","new":"","row":"4"},{"date":"2026-06-21","song":"All The Time (feat. Justus Tams & Rudy Villarreal) [Live]","new":"new","row":"5"},{"date":"2026-07-05","song":"All The Time (feat. Justus Tams & Rudy Villarreal) [Live]","new":"new","row":"5"},{"date":"2026-08-09","song":"All The Time (feat. Justus Tams & Rudy Villarreal) [Live]","new":"new","row":"5"},{"date":"2025-12-24","song":"Angels (Glory To God)","new":"new","row":"6"},{"date":"2025-07-06","song":"Build My Life","new":"","row":"7"},{"date":"2025-09-07","song":"Build My Life","new":"","row":"7"},{"date":"2025-10-05","song":"Build My Life","new":"","row":"7"},{"date":"2026-03-22","song":"Build My Life","new":"","row":"7"},{"date":"2026-01-25","song":"By Faith (feat. Michael Shannon & Zo Ross-Waddell) [Live]","new":"new","row":"8"},{"date":"2026-04-26","song":"Call God","new":"new","row":"9"},{"date":"2026-05-03","song":"Call God","new":"new","row":"9"},{"date":"2026-05-17","song":"Call God","new":"new","row":"9"},{"date":"2026-05-24","song":"Call God","new":"new","row":"9"},{"date":"2026-05-31","song":"Call God","new":"new","row":"9"},{"date":"2026-06-14","song":"Call God","new":"new","row":"9"},{"date":"2026-07-05","song":"Call God","new":"new","row":"9"},{"date":"2026-07-12","song":"Call God","new":"new","row":"9"},{"date":"2026-08-16","song":"Call God","new":"new","row":"9"},{"date":"2026-10-11","song":"Call God","new":"new","row":"9"},{"date":"2026-04-05","song":"Christ And Christ Crucified","new":"new","row":"10"},{"date":"2026-10-25","song":"Christ Is Enough","new":"new","row":"11"},{"date":"2026-05-24","song":"Communion","new":"new","row":"12"},{"date":"2025-07-13","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2025-07-20","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2025-07-27","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2025-08-03","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2025-08-17","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2025-08-31","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2025-10-05","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2026-11-01","song":"Even Though I Walk","new":"new","row":"13"},{"date":"2025-06-22","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2025-08-10","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2025-10-05","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2025-10-26","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2026-01-25","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2026-02-22","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2026-03-29","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2026-04-12","song":"Everything That Has Breath","new":"","row":"14"},{"date":"2025-11-09","song":"Faithful Then Faithful Now","new":"new","row":"15"},{"date":"2025-11-23","song":"Faithful Then Faithful Now","new":"new","row":"15"},{"date":"2026-01-11","song":"Faithful Then Faithful Now","new":"new","row":"15"},{"date":"2026-02-08","song":"Faithful Then Faithful Now","new":"new","row":"15"},{"date":"2026-04-19","song":"Faithful Then Faithful Now","new":"new","row":"15"},{"date":"2026-08-16","song":"Faithful Then Faithful Now","new":"new","row":"15"},{"date":"2025-06-15","song":"Firm Foundation (He Won't)","new":"","row":"16"},{"date":"2025-07-20","song":"Firm Foundation (He Won't)","new":"","row":"16"},{"date":"2025-10-19","song":"Firm Foundation (He Won't)","new":"","row":"16"},{"date":"2025-12-07","song":"Firm Foundation (He Won't)","new":"","row":"16"},{"date":"2026-05-17","song":"Firm Foundation (He Won't)","new":"","row":"16"},{"date":"2026-10-04","song":"Firm Foundation (He Won't)","new":"","row":"16"},{"date":"2025-08-17","song":"Glorious Day","new":"","row":"17"},{"date":"2025-09-28","song":"Glorious Day","new":"","row":"17"},{"date":"2025-11-02","song":"Glorious Day","new":"","row":"17"},{"date":"2026-01-18","song":"Glorious Day","new":"","row":"17"},{"date":"2026-04-12","song":"Glorious Day","new":"","row":"17"},{"date":"2026-06-14","song":"Glorious Day","new":"","row":"17"},{"date":"2025-11-30","song":"God I'm Just Grateful","new":"new","row":"18"},{"date":"2026-10-25","song":"God Is So Good","new":"new","row":"19"},{"date":"2025-06-22","song":"God Really Loves Us","new":"","row":"20"},{"date":"2025-11-23","song":"God Really Loves Us","new":"","row":"20"},{"date":"2026-09-20","song":"Good Plans/Doxology","new":"new","row":"21"},{"date":"2026-09-27","song":"Good Plans/Doxology","new":"new","row":"21"},{"date":"2026-10-11","song":"Good Plans/Doxology","new":"new","row":"21"},{"date":"2025-09-21","song":"Goodness Of God","new":"","row":"22"},{"date":"2025-10-26","song":"Goodness Of God","new":"","row":"22"},{"date":"2026-01-18","song":"Goodness Of God","new":"","row":"22"},{"date":"2026-02-08","song":"Goodness Of God","new":"","row":"22"},{"date":"2026-04-19","song":"Goodness Of God","new":"","row":"22"},{"date":"2026-06-21","song":"Goodness Of God","new":"","row":"22"},{"date":"2026-08-23","song":"Goodness Of God","new":"","row":"22"},{"date":"2026-09-20","song":"Goodness Of God","new":"","row":"22"},{"date":"2026-10-25","song":"Goodness Of God","new":"","row":"22"},{"date":"2025-06-08","song":"Gratitude","new":"","row":"23"},{"date":"2025-06-29","song":"Gratitude","new":"","row":"23"},{"date":"2025-11-30","song":"Gratitude","new":"","row":"23"},{"date":"2026-07-26","song":"Gratitude","new":"","row":"23"},{"date":"2026-08-09","song":"Gratitude","new":"","row":"23"},{"date":"2026-10-18","song":"Gratitude","new":"","row":"23"},{"date":"2025-06-01","song":"Graves Into Gardens","new":"","row":"24"},{"date":"2025-09-14","song":"Graves Into Gardens","new":"","row":"24"},{"date":"2025-11-09","song":"Graves Into Gardens","new":"","row":"24"},{"date":"2026-01-18","song":"Graves Into Gardens","new":"","row":"24"},{"date":"2026-08-30","song":"Graves Into Gardens","new":"","row":"24"},{"date":"2025-09-21","song":"Great Are You Lord","new":"","row":"25"},{"date":"2026-08-30","song":"Great Are You Lord","new":"new","row":"26"},{"date":"2025-07-20","song":"Greater Still","new":"","row":"27"},{"date":"2025-09-14","song":"Greater Still","new":"","row":"27"},{"date":"2025-12-14","song":"Greater Still","new":"","row":"27"},{"date":"2026-02-15","song":"Greater Still","new":"","row":"27"},{"date":"2025-06-29","song":"His Glory And My Good","new":"new","row":"28"},{"date":"2025-07-06","song":"His Glory And My Good","new":"new","row":"28"},{"date":"2025-07-27","song":"His Glory And My Good","new":"new","row":"28"},{"date":"2025-06-08","song":"Holy Forever","new":"","row":"29"},{"date":"2025-06-22","song":"Holy Forever","new":"","row":"29"},{"date":"2025-08-10","song":"Holy Forever","new":"","row":"29"},{"date":"2025-09-28","song":"Holy Forever","new":"","row":"29"},{"date":"2025-12-28","song":"Holy Forever","new":"","row":"29"},{"date":"2026-01-04","song":"Holy Forever","new":"","row":"29"},{"date":"2026-03-08","song":"Holy Forever","new":"","row":"29"},{"date":"2026-04-12","song":"Holy Forever","new":"","row":"29"},{"date":"2026-09-13","song":"House Of The Lord","new":"","row":"30"},{"date":"2025-11-09","song":"How Great Is Our God","new":"new","row":"31"},{"date":"2025-07-27","song":"How Great Thou Art","new":"","row":"32"},{"date":"2025-10-26","song":"How Great Thou Art","new":"","row":"32"},{"date":"2026-06-21","song":"How Great Thou Art","new":"","row":"32"},{"date":"2026-03-01","song":"I Got Saved (feat. Chris Brown) [Live]","new":"new","row":"33"},{"date":"2026-03-22","song":"I Got Saved (feat. Chris Brown) [Live]","new":"new","row":"33"},{"date":"2026-04-05","song":"I Got Saved (feat. Chris Brown) [Live]","new":"new","row":"33"},{"date":"2026-06-28","song":"I Got Saved (feat. Chris Brown) [Live]","new":"new","row":"33"},{"date":"2026-03-22","song":"I Know A Name","new":"new","row":"34"},{"date":"2026-03-29","song":"I Know A Name","new":"new","row":"34"},{"date":"2026-04-05","song":"I Know A Name","new":"new","row":"34"},{"date":"2026-08-23","song":"I Know A Name","new":"new","row":"34"},{"date":"2025-07-13","song":"I Thank God","new":"","row":"35"},{"date":"2025-08-03","song":"I Thank God","new":"","row":"35"},{"date":"2026-01-25","song":"I Thank God","new":"","row":"35"},{"date":"2026-05-31","song":"I Thank God","new":"","row":"35"},{"date":"2026-01-25","song":"Indescribable","new":"new","row":"36"},{"date":"2026-01-04","song":"Jesus Be The Name (feat. Tiffany Hudson)","new":"new","row":"37"},{"date":"2026-01-11","song":"Jesus Be The Name (feat. Tiffany Hudson)","new":"new","row":"37"},{"date":"2026-02-01","song":"Jesus Be The Name (feat. Tiffany Hudson)","new":"new","row":"37"},{"date":"2026-09-06","song":"Jesus Be The Name (feat. Tiffany Hudson)","new":"new","row":"37"},{"date":"2025-08-17","song":"Jesus Have It All","new":"new","row":"38"},{"date":"2025-08-24","song":"Jesus Have It All","new":"new","row":"38"},{"date":"2025-08-31","song":"Jesus Have It All","new":"new","row":"38"},{"date":"2025-11-23","song":"Jesus Have It All","new":"new","row":"38"},{"date":"2026-03-22","song":"Jesus Messiah","new":"new","row":"39"},{"date":"2026-04-12","song":"Jesus Messiah","new":"new","row":"39"},{"date":"2025-11-30","song":"Jireh","new":"","row":"40"},{"date":"2026-09-13","song":"Joy Of The Lord","new":"","row":"41"},{"date":"2025-12-14","song":"Joy To The World (Joyful Joyful)","new":"new","row":"42"},{"date":"2025-12-21","song":"Joy To The World (Joyful Joyful)","new":"new","row":"42"},{"date":"2025-12-24","song":"King Of Kings","new":"new","row":"43"},{"date":"2026-08-09","song":"King of Glory","new":"new","row":"44"},{"date":"2025-06-01","song":"Lord I Need You","new":"","row":"45"},{"date":"2025-06-15","song":"Lord I Need You","new":"","row":"45"},{"date":"2026-01-04","song":"Lord I Need You","new":"","row":"45"},{"date":"2026-02-22","song":"Made For More","new":"new","row":"46"},{"date":"2026-03-01","song":"Made For More","new":"new","row":"46"},{"date":"2026-03-08","song":"Made For More","new":"new","row":"46"},{"date":"2026-03-15","song":"Made For More","new":"new","row":"46"},{"date":"2026-03-22","song":"Made For More","new":"new","row":"46"},{"date":"2026-03-29","song":"Made For More","new":"new","row":"46"},{"date":"2026-05-10","song":"Made For More","new":"new","row":"46"},{"date":"2026-10-18","song":"Made For More","new":"new","row":"46"},{"date":"2026-11-01","song":"Made For More","new":"new","row":"46"},{"date":"2025-12-21","song":"Messiah","new":"new","row":"47"},{"date":"2025-06-15","song":"New Name Written Down in Glory","new":"","row":"48"},{"date":"2025-09-28","song":"New Name Written Down in Glory","new":"","row":"48"},{"date":"2025-11-16","song":"New Name Written Down in Glory","new":"","row":"48"},{"date":"2025-09-07","song":"O Praise The Name (Anástasis)","new":"","row":"49"},{"date":"2025-10-12","song":"O Praise The Name (Anástasis)","new":"","row":"49"},{"date":"2025-11-02","song":"O Praise The Name (Anástasis)","new":"","row":"49"},{"date":"2025-12-28","song":"O Praise The Name (Anástasis)","new":"","row":"49"},{"date":"2026-01-18","song":"O Praise The Name (Anástasis)","new":"","row":"49"},{"date":"2026-02-08","song":"O Praise The Name (Anástasis)","new":"","row":"49"},{"date":"2026-04-26","song":"Oceans (Where Feet May Fail)","new":"new","row":"50"},{"date":"2026-06-07","song":"Oceans (Where Feet May Fail)","new":"new","row":"50"},{"date":"2025-06-15","song":"Praise","new":"","row":"51"},{"date":"2025-07-27","song":"Praise","new":"","row":"51"},{"date":"2025-10-12","song":"Praise","new":"","row":"51"},{"date":"2026-01-11","song":"Praise","new":"","row":"51"},{"date":"2026-02-01","song":"Praise","new":"","row":"51"},{"date":"2026-05-03","song":"Praise","new":"","row":"51"},{"date":"2026-05-31","song":"Praise","new":"","row":"51"},{"date":"2026-07-19","song":"Praise","new":"","row":"51"},{"date":"2026-09-27","song":"Praise","new":"","row":"51"},{"date":"2026-10-25","song":"Praise","new":"","row":"51"},{"date":"2025-08-03","song":"Promises","new":"","row":"52"},{"date":"2025-10-19","song":"Promises","new":"","row":"52"},{"date":"2026-02-01","song":"Promises","new":"","row":"52"},{"date":"2026-03-01","song":"Promises","new":"","row":"52"},{"date":"2026-03-15","song":"Promises","new":"","row":"52"},{"date":"2026-09-13","song":"Promises","new":"","row":"52"},{"date":"2025-09-14","song":"Reason To Praise","new":"","row":"53"},{"date":"2025-11-30","song":"Reason To Praise","new":"","row":"53"},{"date":"2026-09-20","song":"Reason To Praise","new":"","row":"53"},{"date":"2025-08-03","song":"Revelation Song","new":"","row":"54"},{"date":"2025-11-02","song":"Revelation Song","new":"","row":"54"},{"date":"2026-03-08","song":"Revelation Song","new":"","row":"54"},{"date":"2026-03-29","song":"Revelation Song","new":"","row":"54"},{"date":"2026-09-13","song":"Revelation Song","new":"","row":"54"},{"date":"2026-08-09","song":"Room","new":"new","row":"55"},{"date":"2025-07-13","song":"Run To The Father","new":"","row":"56"},{"date":"2025-12-21","song":"Run To The Father","new":"","row":"56"},{"date":"2025-06-01","song":"Same God","new":"","row":"57"},{"date":"2025-08-10","song":"Same God","new":"","row":"57"},{"date":"2025-08-24","song":"Same God","new":"","row":"57"},{"date":"2025-09-28","song":"Same God","new":"","row":"57"},{"date":"2026-06-14","song":"Same God","new":"","row":"57"},{"date":"2026-07-26","song":"Same God","new":"","row":"57"},{"date":"2026-10-04","song":"Same God","new":"","row":"57"},{"date":"2025-09-07","song":"Son Of Suffering","new":"","row":"58"},{"date":"2025-12-28","song":"Son Of Suffering","new":"","row":"58"},{"date":"2025-09-14","song":"Take You At Your Word","new":"","row":"59"},{"date":"2025-11-16","song":"Take You At Your Word","new":"","row":"59"},{"date":"2026-02-15","song":"Take You At Your Word","new":"","row":"59"},{"date":"2026-07-26","song":"Take You At Your Word","new":"","row":"59"},{"date":"2025-08-24","song":"Thank You Jesus For The Blood","new":"","row":"60"},{"date":"2026-02-22","song":"Thank You Jesus For The Blood","new":"","row":"60"},{"date":"2026-04-05","song":"Thank You Jesus For The Blood","new":"","row":"60"},{"date":"2026-07-26","song":"Thank You Jesus For The Blood","new":"","row":"60"},{"date":"2025-10-12","song":"The Blessing","new":"","row":"61"},{"date":"2026-07-19","song":"The Heart Of Worship","new":"new","row":"62"},{"date":"2025-06-08","song":"The Lion And The Lamb","new":"","row":"63"},{"date":"2025-08-31","song":"The Lion And The Lamb","new":"","row":"63"},{"date":"2025-12-07","song":"The Lion And The Lamb","new":"","row":"63"},{"date":"2026-02-22","song":"The Lion And The Lamb","new":"","row":"63"},{"date":"2026-03-15","song":"The Lion And The Lamb","new":"","row":"63"},{"date":"2026-02-08","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-02-15","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-03-15","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-04-19","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-05-17","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-06-14","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-06-28","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-08-16","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2026-10-25","song":"The Lord Will Provide","new":"new","row":"64"},{"date":"2025-07-13","song":"The Lord's Prayer","new":"","row":"65"},{"date":"2025-08-10","song":"The Lord's Prayer","new":"","row":"65"},{"date":"2025-09-07","song":"The Lord's Prayer","new":"","row":"65"},{"date":"2025-09-21","song":"The Lord's Prayer","new":"","row":"65"},{"date":"2025-10-19","song":"The Lord's Prayer","new":"","row":"65"},{"date":"2026-01-04","song":"The Lord's Prayer","new":"","row":"65"},{"date":"2026-03-08","song":"The Lord's Prayer","new":"","row":"65"},{"date":"2025-12-14","song":"This Is Amazing Grace","new":"","row":"66"},{"date":"2026-02-15","song":"This Is Amazing Grace","new":"","row":"66"},{"date":"2026-04-26","song":"This Is Amazing Grace","new":"","row":"66"},{"date":"2026-10-11","song":"This Is Amazing Grace","new":"","row":"66"},{"date":"2025-06-29","song":"Trust In God","new":"","row":"67"},{"date":"2025-10-05","song":"Trust In God","new":"","row":"67"},{"date":"2025-11-16","song":"Trust In God","new":"","row":"67"},{"date":"2025-12-28","song":"Trust In God","new":"","row":"67"},{"date":"2026-02-08","song":"Trust In God","new":"","row":"67"},{"date":"2026-05-10","song":"Trust In God","new":"new","row":"68"},{"date":"2026-05-31","song":"Trust In God","new":"new","row":"68"},{"date":"2026-06-28","song":"Trust In God","new":"new","row":"68"},{"date":"2026-07-12","song":"Trust In God","new":"new","row":"68"},{"date":"2026-08-02","song":"Trust In God","new":"new","row":"68"},{"date":"2026-08-23","song":"Trust In God","new":"new","row":"68"},{"date":"2026-09-06","song":"Trust In God","new":"new","row":"68"},{"date":"2026-11-01","song":"Trust In God","new":"new","row":"68"},{"date":"2026-05-31","song":"WASHED","new":"new","row":"69"},{"date":"2026-06-07","song":"WASHED","new":"new","row":"69"},{"date":"2026-07-12","song":"WASHED","new":"new","row":"69"},{"date":"2026-08-02","song":"WASHED","new":"new","row":"69"},{"date":"2026-08-23","song":"WASHED","new":"new","row":"69"},{"date":"2026-09-20","song":"WASHED","new":"new","row":"69"},{"date":"2026-10-18","song":"WASHED","new":"new","row":"69"},{"date":"2025-09-21","song":"What A Beautiful Name","new":"","row":"70"},{"date":"2025-10-12","song":"What A Beautiful Name","new":"","row":"70"},{"date":"2025-12-07","song":"What A Beautiful Name","new":"","row":"70"},{"date":"2026-10-11","song":"What A Beautiful Name","new":"","row":"70"},{"date":"2025-06-01","song":"What An Awesome God","new":"","row":"71"},{"date":"2025-06-29","song":"What An Awesome God","new":"","row":"71"},{"date":"2025-08-31","song":"What An Awesome God","new":"","row":"71"},{"date":"2026-04-19","song":"What An Awesome God","new":"","row":"71"},{"date":"2026-09-27","song":"Who Else","new":"new","row":"72"},{"date":"2026-10-04","song":"Who Else","new":"new","row":"72"},{"date":"2026-06-07","song":"Who Else/Jesus be the Name/What a Beautiful Name","new":"new","row":"73"},{"date":"2026-05-03","song":"Worthy of it all","new":"new","row":"74"},{"date":"2025-07-06","song":"Yahweh","new":"","row":"75"},{"date":"2025-08-24","song":"Yahweh","new":"","row":"75"},{"date":"2025-09-14","song":"Yahweh","new":"","row":"75"},{"date":"2025-11-09","song":"Yahweh","new":"","row":"75"},{"date":"2026-02-01","song":"Yahweh","new":"","row":"75"},{"date":"2026-05-10","song":"Yahweh","new":"","row":"75"},{"date":"2026-05-24","song":"You Are Good","new":"new","row":"76"},{"date":"2026-07-05","song":"Your Ways Better Forrest Frank","new":"new","row":"77"}];
+const UPDATED = "2026-10-30";
+
+const CHRISTMAS = ['Angels (Glory To God)', 'Joy To The World (Joyful Joyful)'];
+const SHORT = {
+  'All The Time (feat. Justus Tams & Rudy Villarreal) [Live]': 'All The Time',
+  'By Faith (feat. Michael Shannon & Zo Ross-Waddell) [Live]': 'By Faith',
+  'I Got Saved (feat. Chris Brown) [Live]': 'I Got Saved',
+  'Jesus Be The Name (feat. Tiffany Hudson)': 'Jesus Be The Name',
+  'Your Ways Better Forrest Frank': 'Your Ways Better'
+};
+const TIERS = {
+  full: [
+    {tier: 'core', title: 'Core rotation', min: 6, label: 'sung 6+ times'},
+    {tier: 'regular', title: 'Regulars', min: 4, label: 'sung 4–5 times'},
+    {tier: 'occasional', title: 'Occasional', min: 2, label: 'sung 2–3 times'},
+    {tier: 'once', min: 1}
+  ],
+  small: [
+    {tier: 'repeated', title: 'Repeated', min: 2, label: 'sung 2+ times'},
+    {tier: 'once', min: 1}
+  ],
+  smallUpTo: 12
+};
+
+// Clean up: drop Christmas songs, shorten titles, combine songs listed on two rows
+const services = [...new Set(USES.map((u) => u.date))].sort();
+const excluded = new Set(), shortened = new Set(), rowsOf = new Map(), oldSong = new Set(), kept = [];
+for (const u of USES) {
+  const name = u.song.trim();
+  if (CHRISTMAS.includes(name)) { excluded.add(name); continue; }
+  const song = SHORT[name] || name;
+  if (SHORT[name]) shortened.add(song);
+  if (!rowsOf.has(song)) rowsOf.set(song, new Set());
+  rowsOf.get(song).add(u.row);
+  if (u.new !== 'new') oldSong.add(song);
+  kept.push({date: u.date, song});
+}
+const clean = kept.map((k) => ({date: k.date, song: k.song, isNew: !oldSong.has(k.song)}));
+const merged = [...rowsOf].filter(([, r]) => r.size > 1).map(([s]) => s);
+
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const dot = () => el('i', 'dot');
+const newTag = () => el('b', 'new', 'NEW');
+const fmtDate = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC'});
+
+// Filter state lives in the URL hash so a filtered view can be shared as a link
+function readParams() {
+  const p = new URLSearchParams(location.hash.slice(1));
+  const ok = (v) => /^\d{4}-\d{2}-\d{2}$/.test(v || '') ? v : null;
+  return {start: ok(p.get('from')), end: ok(p.get('to'))};
+}
+function setParams(start, end) {
+  const p = new URLSearchParams();
+  if (start) p.set('from', start);
+  if (end) p.set('to', end);
+  const h = p.toString();
+  try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); } catch (e) { location.hash = h; }
+  render();
+}
+
+function summarize() {
+  const p = readParams();
+  let start = p.start || '0000-00-00', end = p.end || '9999-99-99';
+  if (start > end) [start, end] = [end, start];
+  const inRange = (d) => d >= start && d <= end;
+  const svc = services.filter(inRange);
+  const xmas = svc.filter((s) => s.slice(5) === '12-24').length;
+  const counts = new Map();
+  for (const u of clean) {
+    if (!inRange(u.date)) continue;
+    const c = counts.get(u.song) || {song: u.song, uses: 0, isNew: u.isNew};
+    c.uses++; counts.set(u.song, c);
+  }
+  const songs = [...counts.values()].sort((a, b) => b.uses - a.uses || a.song.localeCompare(b.song));
+  const max = songs.length ? songs[0].uses : 0;
+  const top = songs.filter((s) => s.uses === max);
+  const mode = svc.length <= TIERS.smallUpTo ? 'small' : 'full';
+  const tiers = TIERS[mode];
+  for (const s of songs) s.tier = (tiers.find((t) => s.uses >= t.min) || tiers[tiers.length - 1]).tier;
+  const topNames = new Set(top.map((s) => s.song));
+  const once = songs.filter((s) => s.uses === 1).length;
+  return {
+    p, start, end, svc, xmas, sundays: svc.length - xmas, songs, top, mode, tiers,
+    rest: songs.filter((s) => !topNames.has(s.song)),
+    stats: {
+      songs: songs.length,
+      slots: songs.reduce((a, s) => a + s.uses, 0),
+      newSongs: songs.filter((s) => s.isNew).length,
+      oncePct: songs.length ? Math.round(100 * once / songs.length) : 0
+    }
+  };
+}
+
+function render() {
+  const s = summarize();
+  $('start').value = s.p.start || '';
+  $('end').value = s.p.end || '';
+
+  let text = s.sundays + (s.sundays === 1 ? ' Sunday' : ' Sundays');
+  if (s.xmas) text += ' plus Christmas Eve';
+  if (s.p.start || s.p.end) {
+    const from = s.start.startsWith('0000') ? 'the start' : fmtDate(s.start);
+    const to = s.end.startsWith('9999') ? 'the latest service' : fmtDate(s.end);
+    text += ' (' + from + ' – ' + to + ')';
+  }
+  $('services').textContent = text;
+
+  $('st-songs').textContent = s.stats.songs.toLocaleString();
+  $('st-slots').textContent = s.stats.slots.toLocaleString();
+  $('st-new').textContent = s.stats.newSongs.toLocaleString();
+  $('st-once').textContent = s.stats.oncePct + '%';
+
+  const none = s.songs.length === 0;
+  $('none').hidden = !none;
+  $('banner').hidden = none;
+  $('sung-once').hidden = none || !s.rest.some((x) => x.tier === 'once');
+
+  $('top-label').textContent = s.top.length > 1 ? 'Most-sung songs (tie)' : 'Most-sung song';
+  $('top').replaceChildren(...s.top.map((t) => {
+    const row = el('div', 'toprow');
+    row.append(el('span', 'topname', t.song));
+    if (t.isNew) row.append(newTag());
+    const dots = el('span', 'topdots');
+    for (let i = 0; i < t.uses; i++) dots.append(dot());
+    row.append(dots, el('span', 'topn', t.uses + (t.uses === 1 ? ' time' : ' times')));
+    return row;
+  }));
+
+  const topTier = s.mode === 'small' ? 'repeated' : 'core';
+  const caught = s.songs.filter((x) => x.isNew && x.tier === topTier).map((x) => x.song + ' (' + x.uses + ')');
+  $('caught-line').hidden = !caught.length;
+  $('caught').textContent = caught.join(', ');
+
+  $('tiers').replaceChildren(...s.tiers.filter((t) => t.tier !== 'once').map((t) => {
+    const items = s.rest.filter((x) => x.tier === t.tier);
+    const sec = el('section');
+    sec.style.marginBottom = '22px';
+    sec.hidden = none || !items.length;
+    const h = el('h2', null, t.title + ' ');
+    h.append(el('small', null, t.label + ' · ' + items.length + ' songs'));
+    const rows = el('div', 'rows');
+    for (const x of items) {
+      const row = el('div', 'row');
+      row.title = x.song + ': used in ' + x.uses + ' service' + (x.uses === 1 ? '' : 's');
+      const name = el('span', 'name');
+      name.append(el('span', null, x.song));
+      if (x.isNew) name.append(newTag());
+      const dots = el('span', 'dots');
+      for (let i = 0; i < x.uses; i++) dots.append(dot());
+      row.append(name, dots, el('span', 'n', String(x.uses)));
+      rows.append(row);
+    }
+    sec.append(h, rows);
+    return sec;
+  }));
+
+  const onceItems = s.rest.filter((x) => x.tier === 'once').sort((a, b) => a.song.toLowerCase().localeCompare(b.song.toLowerCase()));
+  $('once-count').textContent = onceItems.length;
+  $('once').replaceChildren(...onceItems.map((x) => {
+    const li = el('li', x.isNew ? 'isnew' : null);
+    li.append(dot(), x.song);
+    return li;
+  }));
+
+  const last = services[services.length - 1];
+  document.querySelectorAll('[data-months]').forEach((b) => {
+    const m = b.dataset.months;
+    b.classList.toggle('on', m === 'all' ? !s.p.start && !s.p.end : s.p.start === presetStart(m) && s.p.end === last);
+  });
+}
+
+function presetStart(months) {
+  const d = new Date(services[services.length - 1] + 'T00:00:00Z');
+  d.setUTCMonth(d.getUTCMonth() - Number(months));
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+const valid = (i) => i.value && i.validity.valid;
+$('start').addEventListener('change', (e) => { if (valid(e.target) || !e.target.value) setParams(e.target.value || null, readParams().end); });
+$('end').addEventListener('change', (e) => { if (valid(e.target) || !e.target.value) setParams(readParams().start, e.target.value || null); });
+document.querySelectorAll('[data-months]').forEach((b) => b.addEventListener('click', () => {
+  if (b.dataset.months === 'all') setParams(null, null);
+  else setParams(presetStart(b.dataset.months), services[services.length - 1]);
+}));
+window.addEventListener('hashchange', render);
+
+const notes = [];
+if (excluded.size) notes.push('Left out as Christmas songs: ' + [...excluded].join(', ') + '.');
+if (merged.length) notes.push('Listed twice in the report and combined into one song: ' + merged.join(', ') + '.');
+if (shortened.size) notes.push('Shortened titles: ' + [...shortened].join(', ') + ' (artist and "Live" tags removed).');
+notes.push('The NEW tag follows the Planning Center report, which marks songs introduced during the whole report period.');
+$('notes').replaceChildren(...notes.map((n) => el('li', null, n)));
+$('updated').textContent = fmtDate(UPDATED);
+
+render();
+</script>
+</body>
+</html>
