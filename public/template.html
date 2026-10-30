@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Follow Church - Sunday Morning Songs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--panel:#f6f7f9;--fg:#1c2333;--head:#14213d;--muted:#5b6475;--line:#e3e6ec;--accent:#14213d;--gold:#c98a12;--banner:#14213d;--banner-fg:#fff;--banner-acc:#f2b84b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11151d;--panel:#1a202b;--fg:#e6e9ef;--head:#f3f5f8;--muted:#9aa3b2;--line:#2a3140;--accent:#f2b84b;--gold:#f2b84b;--banner:#1f2a44;--banner-fg:#fff;--banner-acc:#f2b84b}}
+:root[data-theme="dark"]{--bg:#11151d;--panel:#1a202b;--fg:#e6e9ef;--head:#f3f5f8;--muted:#9aa3b2;--line:#2a3140;--accent:#f2b84b;--gold:#f2b84b;--banner:#1f2a44;--banner-fg:#fff;--banner-acc:#f2b84b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45}
+.wrap{max-width:72rem;margin:0 auto;padding:28px 16px 48px;display:flex;flex-direction:column;gap:22px}
+h1{margin:0;font-size:clamp(22px,4vw,30px);font-weight:800;letter-spacing:-.4px;color:var(--head)}
+.sub{margin:4px 0 0;color:var(--muted)}
+.sub b{color:var(--fg);font-weight:600}
+.filter{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.field{display:flex;flex-direction:column;gap:2px;font-size:12px;color:var(--muted)}
+input[type=date],button{font:inherit;font-size:14px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+button{cursor:pointer;font-size:13px}
+button:hover{border-color:var(--muted)}
+button.on{background:var(--head);color:var(--bg);border-color:var(--head)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr));gap:12px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat b{display:block;font-size:28px;font-weight:800;color:var(--head);line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.banner{background:var(--banner);color:var(--banner-fg);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--banner-acc);font-weight:700}
+.toprow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.topname{font-size:22px;font-weight:800}
+.topdots{display:flex;flex-wrap:wrap;gap:4px;flex:1;min-width:0}
+.topdots .dot{width:12px;height:12px;background:var(--banner-acc)}
+.topn{font-weight:800;color:var(--banner-acc);white-space:nowrap}
+.caught{margin:0;font-size:14px;opacity:.9}
+.banner .new{color:var(--banner-acc);border-color:var(--banner-acc)}
+.empty{margin:0;color:var(--muted)}
+section{display:flex;flex-direction:column;gap:8px}
+h2{margin:0;font-size:17px;font-weight:700;color:var(--head);border-bottom:2px solid var(--line);padding-bottom:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+h2 small{font-size:13px;color:var(--muted);font-weight:400}
+.rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,22rem),1fr));column-gap:32px}
+.row{display:grid;grid-template-columns:minmax(0,13rem) minmax(0,1fr) 2rem;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.name{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0;overflow-wrap:anywhere}
+.dots{display:flex;flex-wrap:wrap;gap:3px;min-width:0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;font-weight:700}
+.new{font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:0 4px;line-height:1.5}
+.once{list-style:none;margin:0;padding:0;columns:14rem;column-gap:32px;line-height:1.8}
+.once li{break-inside:avoid;padding-left:16px;position:relative}
+.once li .dot{position:absolute;left:0;top:.6em}
+.once li.isnew{font-weight:700}
+.notes{margin:0;padding-left:18px;font-size:13px;color:var(--muted);line-height:1.6}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);align-items:center}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.tools{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 14px}
+.tools .grow{flex:1 1 14rem}
+.tools input[type=search],select{font:inherit;font-size:14px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;width:100%;min-width:0}
+select{max-width:14rem}
+.check{display:inline-flex;align-items:center;gap:6px;font-size:14px;padding-bottom:7px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;max-height:75vh;overflow-y:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;white-space:nowrap}
+td.wide{white-space:normal;min-width:14rem;max-width:24rem}
+.clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+thead th{position:sticky;top:0;background:var(--panel);z-index:1;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+thead th button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+thead th button:focus-visible{outline:2px solid var(--gold)}
+thead th[aria-sort] button{color:var(--head)}
+th:first-child,td:first-child{position:sticky;left:0;background:var(--bg)}
+thead th:first-child{background:var(--panel);z-index:2}
+tbody tr:hover td{background:var(--panel)}
+td .sub2{display:block;font-size:12px;color:var(--muted);white-space:normal}
+[hidden]{display:none!important}
+@media (max-width:480px){.row{grid-template-columns:minmax(0,9rem) minmax(0,1fr) 1.6rem}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1>Follow Church - Sunday Morning Songs</h1>
+    <p class="sub">How often each song was used across <b id="services">—</b>. Christmas songs are not included.</p>
+  </header>
+
+  <div class="filter">
+    <label class="field">From<input id="start" type="date" min="2025-01-01" max="2027-12-31"></label>
+    <label class="field">To<input id="end" type="date" min="2025-01-01" max="2027-12-31"></label>
+    <div class="presets">
+      <button type="button" data-months="3">Last 3 months</button>
+      <button type="button" data-months="6">Last 6 months</button>
+      <button type="button" data-months="12">Last 12 months</button>
+      <button type="button" data-months="24">Last 2 years</button>
+      <button type="button" data-months="60">Last 5 years</button>
+      <button type="button" data-months="all">All dates</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="st-songs">—</b><span>different songs</span></div>
+    <div class="stat"><b id="st-slots">—</b><span>total song slots</span></div>
+    <div class="stat"><b id="st-new">—</b><span>new songs used</span></div>
+    <div class="stat"><b id="st-once">—</b><span>of songs sung only once</span></div>
+  </div>
+
+  <p class="empty" id="none" hidden>No songs were used in this date range.</p>
+
+  <div class="banner" id="banner">
+    <div class="eyebrow" id="top-label">Most-sung song</div>
+    <div id="top"></div>
+    <p class="caught" id="caught-line">New songs that made the most-used group: <span id="caught"></span></p>
+  </div>
+
+  <div id="tiers"></div>
+
+  <section id="sung-once">
+    <h2>Sung once <small><span id="once-count"></span> songs · bold = new</small></h2>
+    <ul class="once" id="once"></ul>
+  </section>
+
+  <section id="all-songs">
+    <h2>All songs <small>click a column to sort · <span id="tbl-count"></span></small></h2>
+    <div class="tools">
+      <label class="field grow">Search<input id="q" type="search" placeholder="Title, author or theme"></label>
+      <label class="field">Key<select id="f-key"><option value="">Any key</option></select></label>
+      <label class="field">Theme<select id="f-theme"><option value="">Any theme</option></select></label>
+      <label class="field">Group<select id="f-tier"><option value="">All groups</option><option value="core">Core rotation</option><option value="regular">Regulars</option><option value="occasional">Occasional</option><option value="repeated">Repeated</option><option value="once">Sung once</option></select></label>
+      <label class="check"><input id="f-new" type="checkbox"> New songs only</label>
+      <button type="button" id="csv">Download CSV</button>
+    </div>
+    <div class="tbl-wrap"><table id="tbl"><thead><tr id="tbl-head"></tr></thead><tbody id="tbl-body"></tbody></table></div>
+    <p class="empty" id="tbl-none" hidden>No songs match these filters.</p>
+  </section>
+
+  <section>
+    <h2>What was cleaned up</h2>
+    <ul class="notes" id="notes"></ul>
+  </section>
+
+  <div class="key"><span><i class="dot"></i> one service the song was used</span><span><b class="new">NEW</b> first sung in the chosen date range</span><span>Source: Planning Center Services, Sunday Morning Service plans and song library · updated <span id="updated"></span></span></div>
+</main>
+
+<script>
+const USES = /*DATA*/[];
+const SONGS = /*SONGS*/{};
+const UPDATED = "/*UPDATED*/";
+
+// Carols, Advent songs and Christmas mashups. Songs that only share a word with one stay in.
+const CHRISTMAS = [
+  'Angels (Glory To God)', 'Away in a Manger / Worthy Is Your Name', 'Away in a Manger/Silent Night',
+  'Carol Of The Bells', 'Go Tell It On The Mountain', 'God Rest Ye Merry Gentlemen',
+  'Hark The Herald Angels Sing', 'He Has Come For Us (God Rest Ye Merry Gentlemen)', 'He Shall Reign Forevermore',
+  'How Many Kings', 'I Celebrate The Day', 'Joy To The World (Joyful Joyful)', 'Joy To The World (Unspeakable Joy)',
+  'Joy to the World / Joy of the Lord', 'Just Another Christmas', 'let us adore', 'Mary Did You Know',
+  'Midnight Clear (Love Song)', 'Noel/Jesus Paid It All', 'O Come All Ye Faithful', 'O Holy Night',
+  'O Little Town Of Bethlehem (St. Louis)', "Rockin' Around the Christmas Tree/Jingle Bell Rock", 'Silent Night', 'The First Noel'
+];
+const SHORT = {
+  'All The Time (feat. Justus Tams & Rudy Villarreal) [Live]': 'All The Time',
+  'By Faith (feat. Michael Shannon & Zo Ross-Waddell) [Live]': 'By Faith',
+  'I Got Saved (feat. Chris Brown) [Live]': 'I Got Saved',
+  'Jesus Be The Name (feat. Tiffany Hudson)': 'Jesus Be The Name',
+  'Your Ways Better Forrest Frank': 'Your Ways Better'
+};
+const TIERS = {
+  full: [
+    {tier: 'core', title: 'Core rotation', min: 6, label: 'sung 6+ times'},
+    {tier: 'regular', title: 'Regulars', min: 4, label: 'sung 4–5 times'},
+    {tier: 'occasional', title: 'Occasional', min: 2, label: 'sung 2–3 times'},
+    {tier: 'once', min: 1}
+  ],
+  small: [
+    {tier: 'repeated', title: 'Repeated', min: 2, label: 'sung 2+ times'},
+    {tier: 'once', min: 1}
+  ],
+  smallUpTo: 12,
+  baseServices: 76
+};
+
+// Clean up: drop Christmas songs, shorten titles, combine songs listed on two rows
+const services = [...new Set(USES.map((u) => u.date))].sort();
+const excluded = new Set(), shortened = new Set(), rowsOf = new Map(), firstUse = new Map(), clean = [];
+for (const u of USES) {
+  const name = u.song.trim();
+  if (CHRISTMAS.includes(name)) { excluded.add(name); continue; }
+  const song = SHORT[name] || name;
+  if (SHORT[name]) shortened.add(song);
+  if (!rowsOf.has(song)) rowsOf.set(song, new Set());
+  rowsOf.get(song).add(u.row);
+  if (!firstUse.has(song) || u.date < firstUse.get(song)) firstUse.set(song, u.date);
+  // A key change like "D-E" is filed under its starting key
+  clean.push({...u, song, key: u.key ? u.key.split('-')[0].trim() : null});
+}
+const merged = [...rowsOf].filter(([, r]) => r.size > 1).map(([s]) => s);
+// NEW = first sung in the chosen range. The first year of records can't tell new songs from old ones.
+const NEW_FROM = (() => { const d = new Date(services[0] + 'T00:00:00Z'); d.setUTCFullYear(d.getUTCFullYear() + 1); return d.toISOString().slice(0, 10); })();
+const weekday = (d) => new Date(d + 'T00:00:00Z').getUTCDay();
+
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const dot = () => el('i', 'dot');
+const newTag = () => el('b', 'new', 'NEW');
+const fmtDate = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC'});
+
+// Filter state lives in the URL hash so a filtered view can be shared as a link
+function readParams() {
+  const p = new URLSearchParams(location.hash.slice(1));
+  const ok = (v) => /^\d{4}-\d{2}-\d{2}$/.test(v || '') ? v : null;
+  return {start: ok(p.get('from')), end: ok(p.get('to'))};
+}
+function setParams(start, end) {
+  const p = new URLSearchParams();
+  if (start) p.set('from', start);
+  if (end) p.set('to', end);
+  const h = p.toString();
+  try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); } catch (e) { location.hash = h; }
+  render();
+}
+
+function summarize() {
+  const p = readParams();
+  let start = p.start || '0000-00-00', end = p.end || '9999-99-99';
+  if (start > end) [start, end] = [end, start];
+  const inRange = (d) => d >= start && d <= end;
+  const svc = services.filter(inRange);
+  const sundays = svc.filter((d) => weekday(d) === 0).length;
+  const xmas = svc.filter((d) => weekday(d) !== 0 && d.slice(5) === '12-24').length;
+  const other = svc.length - sundays - xmas;
+  const judgeNew = start >= NEW_FROM;
+  const counts = new Map();
+  for (const u of clean) {
+    if (!inRange(u.date)) continue;
+    const c = counts.get(u.song) || {song: u.song, uses: 0, isNew: judgeNew && firstUse.get(u.song) >= start, list: []};
+    c.uses++; c.list.push(u); counts.set(u.song, c);
+  }
+  const songs = [...counts.values()].sort((a, b) => b.uses - a.uses || a.song.localeCompare(b.song));
+  const max = songs.length ? songs[0].uses : 0;
+  const top = songs.filter((s) => s.uses === max);
+  const mode = svc.length <= TIERS.smallUpTo ? 'small' : 'full';
+  // The 6+/4–5/2–3 groups were set for about 76 services; longer ranges raise the cutoffs in proportion
+  const scale = Math.max(1, svc.length / TIERS.baseServices);
+  const tiers = TIERS[mode].map((t, i, all) => {
+    const min = t.min <= 2 ? t.min : Math.round(t.min * scale);
+    const next = i > 0 ? all[i - 1] : null;
+    const nextMin = next ? (next.min <= 2 ? next.min : Math.round(next.min * scale)) : null;
+    const label = t.tier === 'once' ? t.label : nextMin == null ? 'sung ' + min + '+ times' : 'sung ' + (min === nextMin - 1 ? min : min + '–' + (nextMin - 1)) + ' times';
+    return {...t, min, label};
+  });
+  for (const s of songs) s.tier = (tiers.find((t) => s.uses >= t.min) || tiers[tiers.length - 1]).tier;
+  const topNames = new Set(top.map((s) => s.song));
+  const once = songs.filter((s) => s.uses === 1).length;
+  return {
+    p, start, end, svc, xmas, other, sundays, judgeNew, songs, top, mode, tiers,
+    rest: songs.filter((s) => !topNames.has(s.song)),
+    stats: {
+      songs: songs.length,
+      slots: songs.reduce((a, s) => a + s.uses, 0),
+      newSongs: judgeNew ? songs.filter((s) => s.isNew).length : null,
+      oncePct: songs.length ? Math.round(100 * once / songs.length) : 0
+    }
+  };
+}
+
+function render() {
+  const s = summarize();
+  $('start').value = s.p.start || '';
+  $('end').value = s.p.end || '';
+
+  let text = s.sundays + (s.sundays === 1 ? ' Sunday' : ' Sundays');
+  const extra = [];
+  if (s.xmas) extra.push(s.xmas === 1 ? 'Christmas Eve' : s.xmas + ' Christmas Eve services');
+  if (s.other) extra.push(s.other === 1 ? 'Good Friday' : s.other + ' other special services');
+  if (extra.length) text += ' plus ' + extra.join(' and ');
+  if (s.p.start || s.p.end) {
+    const from = s.start.startsWith('0000') ? 'the start' : fmtDate(s.start);
+    const to = s.end.startsWith('9999') ? 'the latest service' : fmtDate(s.end);
+    text += ' (' + from + ' – ' + to + ')';
+  }
+  $('services').textContent = text;
+
+  $('st-songs').textContent = s.stats.songs.toLocaleString();
+  $('st-slots').textContent = s.stats.slots.toLocaleString();
+  $('st-new').textContent = s.stats.newSongs == null ? '—' : s.stats.newSongs.toLocaleString();
+  $('st-new').title = s.judgeNew ? '' : 'Pick a start date after ' + fmtDate(NEW_FROM) + ' to see new songs. Earlier records are too sparse to tell new songs from old ones.';
+  $('st-once').textContent = s.stats.oncePct + '%';
+
+  const none = s.songs.length === 0;
+  $('none').hidden = !none;
+  $('banner').hidden = none;
+  $('sung-once').hidden = none || !s.rest.some((x) => x.tier === 'once');
+
+  $('top-label').textContent = s.top.length > 1 ? 'Most-sung songs (tie)' : 'Most-sung song';
+  $('top').replaceChildren(...s.top.map((t) => {
+    const row = el('div', 'toprow');
+    row.append(el('span', 'topname', t.song));
+    if (t.isNew) row.append(newTag());
+    const dots = el('span', 'topdots');
+    for (let i = 0; i < t.uses; i++) dots.append(dot());
+    row.append(dots, el('span', 'topn', t.uses + (t.uses === 1 ? ' time' : ' times')));
+    return row;
+  }));
+
+  const topTier = s.mode === 'small' ? 'repeated' : 'core';
+  const caught = s.songs.filter((x) => x.isNew && x.tier === topTier).map((x) => x.song + ' (' + x.uses + ')');
+  $('caught-line').hidden = !caught.length;
+  $('caught').textContent = caught.join(', ');
+
+  $('tiers').replaceChildren(...s.tiers.filter((t) => t.tier !== 'once').map((t) => {
+    const items = s.rest.filter((x) => x.tier === t.tier);
+    const sec = el('section');
+    sec.style.marginBottom = '22px';
+    sec.hidden = none || !items.length;
+    const h = el('h2', null, t.title + ' ');
+    h.append(el('small', null, t.label + ' · ' + items.length + ' songs'));
+    const rows = el('div', 'rows');
+    for (const x of items) {
+      const row = el('div', 'row');
+      row.title = x.song + ': used in ' + x.uses + ' service' + (x.uses === 1 ? '' : 's');
+      const name = el('span', 'name');
+      name.append(el('span', null, x.song));
+      if (x.isNew) name.append(newTag());
+      const dots = el('span', 'dots');
+      for (let i = 0; i < x.uses; i++) dots.append(dot());
+      row.append(name, dots, el('span', 'n', String(x.uses)));
+      rows.append(row);
+    }
+    sec.append(h, rows);
+    return sec;
+  }));
+
+  const onceItems = s.rest.filter((x) => x.tier === 'once').sort((a, b) => a.song.toLowerCase().localeCompare(b.song.toLowerCase()));
+  $('once-count').textContent = onceItems.length;
+  $('once').replaceChildren(...onceItems.map((x) => {
+    const li = el('li', x.isNew ? 'isnew' : null);
+    li.append(dot(), x.song);
+    return li;
+  }));
+
+  renderTable(s);
+
+  const last = services[services.length - 1];
+  document.querySelectorAll('[data-months]').forEach((b) => {
+    const m = b.dataset.months;
+    b.classList.toggle('on', m === 'all' ? !s.p.start && !s.p.end : s.p.start === presetStart(m) && s.p.end === last);
+  });
+}
+
+// All-songs table: one row per song in the date range, with Planning Center details
+const splitThemes = (t) => {
+  const seen = new Set();
+  return String(t || '').split(',').map((x) => x.trim()).filter((x) => x && !seen.has(x.toLowerCase()) && seen.add(x.toLowerCase()));
+};
+const mode = (vals) => {
+  const c = new Map();
+  for (const v of vals) if (v != null && v !== '') c.set(v, (c.get(v) || 0) + 1);
+  return [...c].sort((a, b) => b[1] - a[1]).map(([v]) => v);
+};
+const mmss = (sec) => sec == null ? '' : Math.floor(sec / 60) + ':' + String(Math.round(sec % 60)).padStart(2, '0');
+const avg = (vals) => { const v = vals.filter((x) => x != null && x > 0); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+const dayDiff = (a, b) => Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 864e5);
+
+function songRows(s) {
+  const lastSvc = s.svc[s.svc.length - 1];
+  return s.songs.map((x) => {
+    const list = x.list.slice().sort((a, b) => a.date.localeCompare(b.date));
+    const recs = [...new Set(list.map((u) => u.row))].map((id) => SONGS[id]).filter(Boolean);
+    const pick = (f) => { for (const r of recs) if (r[f] != null && r[f] !== '') return r[f]; return null; };
+    const keys = mode(list.map((u) => u.key));
+    const last = list[list.length - 1].date;
+    return {
+      song: x.song, isNew: x.isNew, tier: x.tier, uses: x.uses,
+      first: list[0].date, last,
+      since: lastSvc ? Math.round(dayDiff(last, lastSvc) / 7) : null,
+      key: keys[0] || null, keys,
+      bpm: list.map((u) => u.bpm).filter((b) => b > 0).pop() ?? null,
+      meter: mode(list.map((u) => u.meter))[0] || null,
+      length: avg(list.map((u) => u.length)),
+      pos: avg(list.map((u) => u.pos)),
+      opens: list.filter((u) => u.pos === 1).length,
+      author: pick('author'), ccli: pick('ccli'),
+      themes: [...new Set(recs.flatMap((r) => splitThemes(r.themes)))],
+      added: recs.map((r) => r.added).filter(Boolean).sort()[0] || null
+    };
+  });
+}
+
+const COLS = [
+  {k: 'song', label: 'Song', type: 'text'},
+  {k: 'uses', label: 'Times', type: 'num', desc: true},
+  {k: 'first', label: 'First used', type: 'date'},
+  {k: 'last', label: 'Last used', type: 'date', desc: true},
+  {k: 'since', label: 'Weeks since', type: 'num', desc: true},
+  {k: 'key', label: 'Key', type: 'text'},
+  {k: 'bpm', label: 'BPM', type: 'num', desc: true},
+  {k: 'meter', label: 'Time', type: 'text'},
+  {k: 'length', label: 'Length', type: 'num', desc: true},
+  {k: 'pos', label: 'Avg. spot', type: 'num'},
+  {k: 'opens', label: 'Openers', type: 'num', desc: true},
+  {k: 'author', label: 'Author', type: 'text', wrap: true},
+  {k: 'ccli', label: 'CCLI #', type: 'num'},
+  {k: 'themes', label: 'Themes', type: 'text', wrap: true},
+  {k: 'added', label: 'Added to PCO', type: 'date', desc: true}
+];
+const TIPS = {
+  since: 'Weeks between the last time it was sung and the latest service in the range',
+  pos: 'Average place in the set list (1 = first song of the service)',
+  opens: 'Times it was the first song of the service',
+  length: 'Average planned length',
+  key: 'Key it was most often played in',
+  bpm: 'Tempo of the arrangement used most recently',
+  added: 'When the song was added to the Planning Center library'
+};
+const tbl = {sort: 'uses', dir: -1, rows: []};
+const cellText = (r, k) => {
+  const v = r[k];
+  if (v == null || (Array.isArray(v) && !v.length)) return '';
+  if (k === 'length') return mmss(v);
+  if (k === 'pos') return v.toFixed(1);
+  if (k === 'first' || k === 'last' || k === 'added') return fmtDate(v.slice(0, 10));
+  if (k === 'key') return r.keys.length > 1 ? v + ' (also ' + r.keys.slice(1).join(', ') + ')' : v;
+  if (k === 'themes') return v.join(', ');
+  return String(v);
+};
+const sortVal = (r, k) => { const v = r[k]; return Array.isArray(v) ? (v.length ? v.join(', ').toLowerCase() : null) : typeof v === 'string' ? v.toLowerCase() : v; };
+
+function filteredRows() {
+  const q = $('q').value.trim().toLowerCase();
+  const key = $('f-key').value, theme = $('f-theme').value, tier = $('f-tier').value, onlyNew = $('f-new').checked;
+  const rows = tbl.rows.filter((r) =>
+    (!q || [r.song, r.author || '', r.themes.join(' ')].join(' ').toLowerCase().includes(q)) &&
+    (!key || r.keys.includes(key)) && (!theme || r.themes.includes(theme)) &&
+    (!tier || r.tier === tier) && (!onlyNew || r.isNew));
+  const k = tbl.sort, d = tbl.dir;
+  return rows.sort((a, b) => {
+    const x = sortVal(a, k), y = sortVal(b, k);
+    if (x == null && y == null) return a.song.localeCompare(b.song);
+    if (x == null) return 1;
+    if (y == null) return -1;
+    return (x < y ? -1 : x > y ? 1 : 0) * d || a.song.localeCompare(b.song);
+  });
+}
+
+function drawTable() {
+  $('tbl-head').replaceChildren(...COLS.map((c) => {
+    const th = el('th', c.type === 'num' ? 'num' : null);
+    if (TIPS[c.k]) th.title = TIPS[c.k];
+    if (tbl.sort === c.k) th.setAttribute('aria-sort', tbl.dir > 0 ? 'ascending' : 'descending');
+    const b = el('button', null, c.label + (tbl.sort === c.k ? (tbl.dir > 0 ? ' ▲' : ' ▼') : ''));
+    b.type = 'button';
+    b.addEventListener('click', () => {
+      if (tbl.sort === c.k) tbl.dir = -tbl.dir; else { tbl.sort = c.k; tbl.dir = c.desc ? -1 : 1; }
+      drawTable();
+    });
+    th.append(b);
+    return th;
+  }));
+  const rows = filteredRows();
+  $('tbl-count').textContent = rows.length + ' of ' + tbl.rows.length + ' songs';
+  $('tbl-none').hidden = rows.length > 0;
+  $('tbl-body').replaceChildren(...rows.map((r) => {
+    const tr = el('tr');
+    for (const c of COLS) {
+      const full = cellText(r, c.k);
+      const text = c.k === 'themes' && r.themes.length > 4 ? r.themes.slice(0, 4).join(', ') + ' +' + (r.themes.length - 4) + ' more' : full;
+      const td = el('td', c.type === 'num' ? 'num' : c.wrap ? 'wide' : null);
+      if (c.wrap) { const sp = el('span', 'clamp', text); sp.title = full; td.append(sp); } else td.textContent = text;
+      if (c.k === 'song' && r.isNew) { td.append(' '); td.append(newTag()); }
+      tr.append(td);
+    }
+    return tr;
+  }));
+}
+
+function fillSelect(id, values, label) {
+  const sel = $(id), cur = sel.value;
+  sel.replaceChildren(el('option', null, label), ...values.map((v) => { const o = el('option', null, v); o.value = v; return o; }));
+  sel.firstChild.value = '';
+  sel.value = values.includes(cur) ? cur : '';
+}
+
+function renderTable(s) {
+  tbl.rows = songRows(s);
+  const order = ['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
+  const keys = [...new Set(tbl.rows.flatMap((r) => r.keys))].sort((a, b) => (order.indexOf(a.replace(/m$/, '')) - order.indexOf(b.replace(/m$/, ''))) || a.localeCompare(b));
+  fillSelect('f-key', keys, 'Any key');
+  fillSelect('f-theme', [...new Set(tbl.rows.flatMap((r) => r.themes))].sort((a, b) => a.localeCompare(b)), 'Any theme');
+  $('all-songs').hidden = !tbl.rows.length;
+  drawTable();
+}
+
+['q', 'f-key', 'f-theme', 'f-tier', 'f-new'].forEach((id) => $(id).addEventListener('input', drawTable));
+$('csv').addEventListener('click', () => {
+  const esc = (v) => /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+  const lines = [['Song', 'New'].concat(COLS.slice(1).map((c) => c.label)).map(esc).join(',')];
+  for (const r of filteredRows()) {
+    lines.push([r.song, r.isNew ? 'yes' : ''].concat(COLS.slice(1).map((c) => c.k === 'length' ? mmss(r.length) : c.k === 'first' || c.k === 'last' || c.k === 'added' ? (r[c.k] || '').slice(0, 10) : cellText(r, c.k))).map(esc).join(','));
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lines.join('\n')], {type: 'text/csv'}));
+  a.download = 'follow-church-songs.csv';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+
+function presetStart(months) {
+  const d = new Date(services[services.length - 1] + 'T00:00:00Z');
+  d.setUTCMonth(d.getUTCMonth() - Number(months));
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+const valid = (i) => i.value && i.validity.valid;
+$('start').addEventListener('change', (e) => { if (valid(e.target) || !e.target.value) setParams(e.target.value || null, readParams().end); });
+$('end').addEventListener('change', (e) => { if (valid(e.target) || !e.target.value) setParams(readParams().start, e.target.value || null); });
+document.querySelectorAll('[data-months]').forEach((b) => b.addEventListener('click', () => {
+  if (b.dataset.months === 'all') setParams(null, null);
+  else setParams(presetStart(b.dataset.months), services[services.length - 1]);
+}));
+window.addEventListener('hashchange', render);
+
+const notes = [];
+if (excluded.size) notes.push('Left out as Christmas songs: ' + [...excluded].join(', ') + '.');
+if (merged.length) notes.push('Listed twice in the report and combined into one song: ' + merged.join(', ') + '.');
+if (shortened.size) notes.push('Shortened titles: ' + [...shortened].join(', ') + ' (artist and "Live" tags removed).');
+notes.push('NEW marks songs first sung in the chosen date range. Records before ' + fmtDate(NEW_FROM) + ' are too sparse to tell new songs from old ones, so NEW is left out for ranges starting earlier.');
+notes.push('Only songs linked to the Planning Center song library are counted. Songs typed into a plan as plain text are not, which mostly affects 2014–2016.');
+notes.push('Mid-week rehearsal plans (mostly 2014–2018) are left out; Sundays, Christmas Eve and Good Friday are included. A song sung twice in one service counts once.');
+$('notes').replaceChildren(...notes.map((n) => el('li', null, n)));
+$('updated').textContent = fmtDate(UPDATED);
+
+render();
+</script>
+</body>
+</html>
