@@ -382,5 +382,53 @@
   "bpm": 74,
   "meter": "4/4",
   "arrangement": "Hillsong Kids"
+ },
+ {
+  "date": "2026-11-01",
+  "plan_id": "90162221",
+  "item_title": "AMAZING!",
+  "song_id": "30560549",
+  "pos": 1,
+  "key": "G",
+  "length": 264,
+  "bpm": 145,
+  "meter": "4/4",
+  "arrangement": "ELEVATION RHYTHM"
+ },
+ {
+  "date": "2026-11-01",
+  "plan_id": "90162221",
+  "item_title": "Made For More",
+  "song_id": "29588929",
+  "pos": 2,
+  "key": "D",
+  "length": 369,
+  "bpm": 75,
+  "meter": "6/8",
+  "arrangement": "Josh Baldwin"
+ },
+ {
+  "date": "2026-11-01",
+  "plan_id": "90162221",
+  "item_title": "Even Though I Walk",
+  "song_id": "28483750",
+  "pos": 3,
+  "key": "A",
+  "length": 430,
+  "bpm": 67.5,
+  "meter": "4/4",
+  "arrangement": "Bethel Music"
+ },
+ {
+  "date": "2026-11-01",
+  "plan_id": "90162221",
+  "item_title": "Trust In God",
+  "song_id": "30078026",
+  "pos": 4,
+  "key": "C",
+  "length": 446,
+  "bpm": 74,
+  "meter": "6/8",
+  "arrangement": "Elevation Worship"
  }
 ]
