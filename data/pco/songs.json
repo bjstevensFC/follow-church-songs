@@ -107,7 +107,7 @@
   "themes": null,
   "hidden": false,
   "created_at": "2026-07-30T14:50:44Z",
-  "last_scheduled_at": "2026-11-01T11:15:00Z"
+  "last_scheduled_at": "2026-11-03T18:00:00Z"
  },
  {
   "id": "29388429",
@@ -167,7 +167,7 @@
   "themes": "Jesus' name, Atonement, Power, Freedom, Redemption, Sacrifice",
   "hidden": false,
   "created_at": "2019-11-01T12:30:13Z",
-  "last_scheduled_at": "2026-10-06T18:00:00Z"
+  "last_scheduled_at": "2026-11-03T18:00:00Z"
  },
  {
   "id": "22985278",
@@ -567,7 +567,7 @@
   "themes": "Father, Praise, Purpose, Shepherd",
   "hidden": false,
   "created_at": "2026-09-19T16:40:44Z",
-  "last_scheduled_at": "2026-10-11T11:15:00Z"
+  "last_scheduled_at": "2026-11-08T11:15:00Z"
  },
  {
   "id": "30712177",
@@ -577,7 +577,7 @@
   "themes": null,
   "hidden": false,
   "created_at": "2026-08-28T13:19:18Z",
-  "last_scheduled_at": "2026-09-01T19:00:00Z"
+  "last_scheduled_at": "2026-11-03T18:00:00Z"
  },
  {
   "id": "20053699",
@@ -787,7 +787,7 @@
   "themes": "Exaltation, Holiness, Lamb Of God, Praise, Singing, Worship",
   "hidden": false,
   "created_at": "2024-05-23T01:58:26Z",
-  "last_scheduled_at": "2026-04-12T11:00:00Z"
+  "last_scheduled_at": "2026-11-03T18:00:00Z"
  },
  {
   "id": "19151022",
@@ -957,7 +957,7 @@
   "themes": "Grace, Praise, Redemption, Testimony",
   "hidden": false,
   "created_at": "2026-11-01T19:47:58Z",
-  "last_scheduled_at": null
+  "last_scheduled_at": "2026-11-08T11:15:00Z"
  },
  {
   "id": "25707431",
@@ -1097,7 +1097,7 @@
   "themes": null,
   "hidden": false,
   "created_at": "2026-09-29T14:37:20Z",
-  "last_scheduled_at": "2026-10-06T18:00:00Z"
+  "last_scheduled_at": "2026-11-03T18:00:00Z"
  },
  {
   "id": "21042458",
@@ -1418,6 +1418,16 @@
   "hidden": true,
   "created_at": "2021-11-15T15:59:33Z",
   "last_scheduled_at": "2023-01-08T11:00:00Z"
+ },
+ {
+  "id": "31055148",
+  "title": "No One Like The Lord (We Crown You)",
+  "author": "Allyah Stamper, Eniola Abioye, Jonathan Stamper, Lindy Cofer, and Nathan Carter",
+  "ccli": 7239649,
+  "themes": "Glory, Holiness, Jesus, King, Worship, Worthiness",
+  "hidden": false,
+  "created_at": "2026-11-02T13:37:53Z",
+  "last_scheduled_at": "2026-11-03T18:00:00Z"
  },
  {
   "id": "13114854",
@@ -1747,7 +1757,7 @@
   "themes": null,
   "hidden": false,
   "created_at": "2026-10-21T13:34:17Z",
-  "last_scheduled_at": null
+  "last_scheduled_at": "2026-11-03T18:00:00Z"
  },
  {
   "id": "20381425",
@@ -1957,7 +1967,7 @@
   "themes": null,
   "hidden": false,
   "created_at": "2026-03-25T14:58:13Z",
-  "last_scheduled_at": "2026-11-01T18:00:00Z"
+  "last_scheduled_at": "2026-11-08T11:15:00Z"
  },
  {
   "id": "18684098",
@@ -2030,6 +2040,16 @@
   "last_scheduled_at": "2026-10-04T11:15:00Z"
  },
  {
+  "id": "31057535",
+  "title": "Who Else / Is He Worthy / Open The Scroll / Worthy Of It All (Live)",
+  "author": "Kingdom Culture Worship",
+  "ccli": null,
+  "themes": null,
+  "hidden": false,
+  "created_at": "2026-11-02T18:39:53Z",
+  "last_scheduled_at": "2026-11-08T11:15:00Z"
+ },
+ {
   "id": "30278032",
   "title": "Who Else/Jesus be the Name/What a Beautiful Name",
   "author": null,
@@ -2067,6 +2087,16 @@
   "themes": null,
   "hidden": true,
   "created_at": "2017-08-06T23:56:16Z",
+  "last_scheduled_at": null
+ },
+ {
+  "id": "31064365",
+  "title": "Worthy Is The Lamb (Live)",
+  "author": "Christ for the Nations Worship",
+  "ccli": null,
+  "themes": null,
+  "hidden": false,
+  "created_at": "2026-11-03T17:13:50Z",
   "last_scheduled_at": null
  },
  {
